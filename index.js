@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000; // ✅ Fallback port
 app.use(cors({
     origin: "https://port-folio-eov.pages.dev", // ✅ Your frontend URL
     methods: ['GET', 'POST', 'HEAD', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type']
 }));
 
 app.use(express.json());
