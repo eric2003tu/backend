@@ -6,26 +6,11 @@ const sendTo = require("./routes/emailRoutes");
 const app = express();
 const port = process.env.PORT || 3000; // ✅ Fallback port
 
-// ✅ Allow requests only from your frontend domains
-const allowedOrigins = [
-    "https://port-folio-eov.pages.dev",
-    "https://new-portfolio-3yim.onrender.com"
-];
-
+// ✅ Allow requests only from your frontend domain
 app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: 'https://new-portfolio-3yim.onrender.com/', // ✅ Your frontend URL
     methods: ['GET', 'POST', 'HEAD', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true // If you need to allow credentials
+    allowedHeaders: ['Content-Type']
 }));
 
 app.use(express.json());
