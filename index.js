@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000; // ✅ Fallback port
 
 // ✅ Allow requests only from your frontend domain
 app.use(cors({
-    origin: 'https://new-portfolio-3yim.onrender.com/', // ✅ Your frontend URL
+    origin: 'https://new-portfolio-3yim.onrender.com', // ✅ Your frontend URL
     methods: ['GET', 'POST', 'HEAD', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type']
 }));
