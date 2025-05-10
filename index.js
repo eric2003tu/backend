@@ -1,23 +1,41 @@
 require('dotenv').config();
-const cors = require('cors');
 const express = require('express');
-const sendTo = require("./routes/emailRoutes");
+const cors = require('cors');
+const emailRoutes = require('./routes/emailRoutes');
 
 const app = express();
-const port = process.env.PORT || 3000; // ✅ Fallback port
+const port = process.env.PORT || 2000;
 
-// ✅ Allow requests only from your frontend domain
+// Middleware
 app.use(cors({
-    origin: 'https://new-portfolio-3yim.onrender.com', // ✅ Your frontend URL
-    methods: ['GET', 'POST', 'HEAD', 'PATCH', 'DELETE'],
+    origin: [
+        'http://localhost:5173',
+        'https://new-portfolio-3yim.onrender.com',
+        'https://port-folio-eov.pages.dev'
+    ],
+    methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
-// ✅ Use API routes
-app.use('/api', sendTo);
+// Routes
+app.use('/api', emailRoutes);
 
-app.listen(port, () => {
-    console.log(`🚀 Server is running at http://localhost:${port}`);
+// Health check
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        error: 'Internal Server Error',
+        message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
+
+app.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${port}`);
 });
